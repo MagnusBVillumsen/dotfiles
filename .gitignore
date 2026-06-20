@@ -1,0 +1,4 @@
+# Nvim runtime data (ikke config)
+nvim/.DS_Store
+
+# Lazy plugin data ligger i ~/.local/share/nvim — ikke her
