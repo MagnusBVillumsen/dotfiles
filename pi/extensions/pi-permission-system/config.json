@@ -1,0 +1,40 @@
+{
+  "permission": {
+    "tool": {
+      "*": "allow",
+      "write_file": "ask",
+      "edit_file": "ask",
+      "execute_bash": "ask"
+    },
+    "bash": {
+      "*": "ask",
+      "git status": "allow",
+      "git log *": "allow",
+      "git diff *": "allow",
+      "git show *": "allow",
+      "ls *": "allow",
+      "cat *": "allow",
+      "echo *": "allow",
+      "which *": "allow",
+      "find *": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+      "pwd": "allow",
+      "rm -rf *": "deny",
+      "sudo rm *": "deny",
+      "chmod 777 *": "deny",
+      "> /etc/*": "deny"
+    },
+    "path": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow",
+      "~/.ssh/*": "deny",
+      "~/.pi/agent/auth.json": "deny"
+    },
+    "external_directory": {
+      "*": "ask"
+    }
+  }
+}

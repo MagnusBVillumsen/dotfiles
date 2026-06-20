@@ -19,9 +19,11 @@ ln -sf "$DOTFILES/starship/starship.toml"     ~/.config/starship.toml
 ln -sf "$DOTFILES/zsh/.zshrc"                 ~/.zshrc
 
 # Pi coding agent
-mkdir -p ~/.pi/agent
+mkdir -p ~/.pi/agent/extensions/pi-permission-system
 ln -sf "$DOTFILES/pi/AGENTS.md"    ~/.pi/agent/AGENTS.md
 ln -sf "$DOTFILES/pi/settings.json" ~/.pi/agent/settings.json
+ln -sf "$DOTFILES/pi/extensions/pi-permission-system/config.json" \
+       ~/.pi/agent/extensions/pi-permission-system/config.json
 
 echo ""
 echo "Færdig! Installer pakker:"
