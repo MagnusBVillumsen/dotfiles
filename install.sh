@@ -25,6 +25,10 @@ ln -sf "$DOTFILES/pi/settings.json" ~/.pi/agent/settings.json
 ln -sf "$DOTFILES/pi/extensions/pi-permission-system/config.json" \
        ~/.pi/agent/extensions/pi-permission-system/config.json
 
+# Pi skills
+mkdir -p ~/.pi/agent/skills/pdf-noter
+ln -sf "$DOTFILES/pi/skills/pdf-noter/SKILL.md" ~/.pi/agent/skills/pdf-noter/SKILL.md
+
 echo ""
 echo "Færdig! Installer pakker:"
 echo "  sudo pacman -S zsh zsh-autosuggestions zsh-syntax-highlighting starship fzf tmux neovim git ttf-jetbrains-mono-nerd wl-clipboard bat ripgrep fd unzip nodejs npm deno stylua clang python-pipx"
