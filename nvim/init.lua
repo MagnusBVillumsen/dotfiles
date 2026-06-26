@@ -1099,6 +1099,17 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   -- { import = 'custom.plugins' },
+
+  {
+    'ggml-org/llama.vim',
+    config = function()
+      vim.g.llama_config = {
+        endpoint_fim  = 'http://127.0.0.1:8012/infill',
+        endpoint_inst = 'http://127.0.0.1:8013/v1/chat/completions',
+        stop_strings_inst = { '<|im_end|>', '<|endoftext|>' },
+      }
+    end,
+  },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
@@ -1106,7 +1117,7 @@ require('lazy').setup({
   -- you can continue same window with `<space>sr` which resumes last telescope search
 }, {
   git = {
-    url_format = 'git@github.com:%s.git',
+    url_format = 'https://github.com/%s.git',
     filter = false,
   },
 

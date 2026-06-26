@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "0.79.8",
   "theme": "dark",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.5",
+  "defaultProvider": "local-vanilla",
+  "defaultModel": "qwen3.6-27b-rocmfp4-vanilla",
   "defaultThinkingLevel": "medium",
   "packages": [
     "npm:@gotgenes/pi-permission-system",
