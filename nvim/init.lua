@@ -1102,7 +1102,12 @@ require('lazy').setup({
 
   {
     'ggml-org/llama.vim',
-    config = function()
+    -- VIGTIGT: 'init' (ikke 'config'). plugin/llama.vim kalder llama#init() ved
+    -- plugin-load, som merger defaults ind i g:llama_config (fx ring_chunk_size).
+    -- Sætter vi config bagefter, overskriver vi hele dict'en og smider defaults væk
+    -- → E716 "Key not present: ring_chunk_size" ved BufLeave. 'init' kører FØR
+    -- pluginnet loader, så vores nøgler merges oven på defaults i stedet.
+    init = function()
       vim.g.llama_config = {
         endpoint_fim  = 'http://127.0.0.1:8012/infill',
         endpoint_inst = 'http://127.0.0.1:8013/v1/chat/completions',
