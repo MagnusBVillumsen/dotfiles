@@ -67,3 +67,6 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # export AI_CMD_BACKEND="ollama"
 # export AI_CMD_OLLAMA_MODEL="qwen2.5-coder:7b"
 # source ~/.zsh/ai-cmd/ai-cmd.plugin.zsh
+
+# npm globale pakker (bruger-prefix, ingen sudo)
+export PATH="$HOME/.npm-global/bin:$PATH"

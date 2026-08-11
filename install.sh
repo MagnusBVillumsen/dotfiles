@@ -22,6 +22,7 @@ ln -sf "$DOTFILES/zsh/.zshrc"                 ~/.zshrc
 mkdir -p ~/.pi/agent/extensions/pi-permission-system
 ln -sf "$DOTFILES/pi/AGENTS.md"    ~/.pi/agent/AGENTS.md
 ln -sf "$DOTFILES/pi/settings.json" ~/.pi/agent/settings.json
+ln -sf "$DOTFILES/pi/models.json"   ~/.pi/agent/models.json
 ln -sf "$DOTFILES/pi/extensions/pi-permission-system/config.json" \
        ~/.pi/agent/extensions/pi-permission-system/config.json
 

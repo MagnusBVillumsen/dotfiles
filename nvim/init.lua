@@ -530,6 +530,40 @@ require('lazy').setup({
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
           map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+
+          -- Go to definition in the other split window
+          map('gD', function()
+            local orig_buf = vim.api.nvim_get_current_buf()
+            local cursor = vim.api.nvim_win_get_cursor(0)
+
+            -- Find et ikke-floating normal-vindue at hoppe til (skip terminal/plugin)
+            local target = nil
+            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+              local buf = vim.api.nvim_win_get_buf(win)
+              if win ~= vim.api.nvim_get_current_win()
+                and vim.api.nvim_win_get_config(win).relative == ''
+                and vim.bo[buf].buftype == '' then
+                target = win
+                break
+              end
+            end
+            if target then
+              vim.api.nvim_set_current_win(target)
+            else
+              vim.cmd('vsplit')
+            end
+
+            -- Indlæs original-bufferen i dette vindue og sæt cursoren samme sted
+            vim.api.nvim_win_set_buf(0, orig_buf)
+            local row = math.min(cursor[1], vim.api.nvim_buf_line_count(orig_buf))
+            vim.api.nvim_win_set_cursor(0, { row, cursor[2] })
+
+            vim.lsp.buf.definition()
+          end, '[G]oto [D]efinition in other split')
+
+          -- Show hover documentation for the symbol under your cursor.
+          map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
@@ -648,7 +682,9 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- PHP
-        intelephense = {},
+        intelephense = {
+          cmd = { 'intelephense', '--stdio' },
+        },
 
         -- TypeScript / JavaScript (Node)
         ts_ls = {

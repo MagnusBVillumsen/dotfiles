@@ -1,0 +1,95 @@
+{
+  "providers": {
+    "local-vanilla": {
+      "baseUrl": "http://localhost:18181/v1",
+      "api": "openai-completions",
+      "apiKey": "local",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "thinkingFormat": "qwen-chat-template"
+      },
+      "models": [
+        {
+          "id": "qwen3.6-27b-rocmfp4-vanilla",
+          "name": "Qwen3.6 27B Vanilla (lokal)",
+          "reasoning": false,
+          "contextWindow": 262144,
+          "maxTokens": 65536,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    },
+    "local-chadrock": {
+      "baseUrl": "http://localhost:18180/v1",
+      "api": "openai-completions",
+      "apiKey": "local",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "thinkingFormat": "qwen-chat-template"
+      },
+      "models": [
+        {
+          "id": "qwable-5-27b-chadrock-v2-rocmfp4",
+          "name": "Qwable 5 27B Chadrock (lokal)",
+          "reasoning": false,
+          "contextWindow": 131072,
+          "maxTokens": 65536,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    },
+    "local-ds4": {
+      "baseUrl": "http://localhost:18183/v1",
+      "api": "openai-completions",
+      "apiKey": "local",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": true,
+        "thinkingFormat": "chat-template",
+        "chatTemplateKwargs": {
+          "enable_thinking": { "$var": "thinking.enabled" }
+        }
+      },
+      "models": [
+        {
+          "id": "deepseek-v4-flash-0731-ud-iq3xxs",
+          "name": "DeepSeek V4 Flash 0731 (lokal)",
+          "reasoning": true,
+          "contextWindow": 262144,
+          "maxTokens": 32768,
+          "thinkingLevelMap": {
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "high",
+            "xhigh": "max",
+            "max": "max"
+          },
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    },
+    "local-qwen": {
+      "baseUrl": "http://localhost:8000/v1",
+      "api": "openai-completions",
+      "apiKey": "local",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "thinkingFormat": "qwen-chat-template"
+      },
+      "models": [
+        {
+          "id": "Qwen3.6-27B-AWQ4",
+          "name": "Qwen 3.6 27B (lokal)",
+          "reasoning": true,
+          "contextWindow": 65536,
+          "maxTokens": 65536,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    }
+  }
+}

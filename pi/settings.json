@@ -1,12 +1,16 @@
 {
-  "lastChangelogVersion": "0.79.8",
+  "lastChangelogVersion": "0.84.1",
   "theme": "dark",
-  "defaultProvider": "local-vanilla",
-  "defaultModel": "qwen3.6-27b-rocmfp4-vanilla",
-  "defaultThinkingLevel": "medium",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-sol",
+  "defaultThinkingLevel": "high",
   "packages": [
     "npm:@gotgenes/pi-permission-system",
     "npm:pi-web-access",
-    "npm:pi-codex-goal"
+    "npm:pi-codex-goal",
+    "npm:@georgedong32/pi-effort",
+    "npm:pi-opencode-provider",
+    "npm:pi-subagents",
+    "npm:@juicesharp/rpiv-ask-user-question"
   ]
 }
