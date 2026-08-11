@@ -1,29 +1,19 @@
 {
+  "$schema": "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json",
+  "debugLog": false,
+  "permissionReviewLog": true,
+  "yoloMode": false,
   "permission": {
-    "tool": {
-      "*": "allow",
-      "write_file": "ask",
-      "edit_file": "ask",
-      "execute_bash": "ask"
-    },
-    "bash": {
+    "*": "allow",
+    "write": {
       "*": "ask",
-      "git status": "allow",
-      "git log *": "allow",
-      "git diff *": "allow",
-      "git show *": "allow",
-      "ls *": "allow",
-      "cat *": "allow",
-      "echo *": "allow",
-      "which *": "allow",
-      "find *": "allow",
-      "grep *": "allow",
-      "rg *": "allow",
-      "pwd": "allow",
-      "rm -rf *": "deny",
-      "sudo rm *": "deny",
-      "chmod 777 *": "deny",
-      "> /etc/*": "deny"
+      "/tmp/*": "allow",
+      "/var/tmp/*": "allow"
+    },
+    "edit": {
+      "*": "ask",
+      "/tmp/*": "allow",
+      "/var/tmp/*": "allow"
     },
     "path": {
       "*": "allow",
@@ -31,10 +21,60 @@
       "*.env.*": "deny",
       "*.env.example": "allow",
       "~/.ssh/*": "deny",
-      "~/.pi/agent/auth.json": "deny"
+      "~/.pi/agent/auth.json": "deny",
+      "/etc/*": "deny"
+    },
+    "bash": {
+      "*": "ask",
+      "cd *": "allow",
+      "pwd": "allow",
+      "echo *": "allow",
+      "ls *": "allow",
+      "cat *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "less *": "allow",
+      "wc *": "allow",
+      "file *": "allow",
+      "stat *": "allow",
+      "du *": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+      "find *": "allow",
+      "fd *": "allow",
+      "which *": "allow",
+      "type *": "allow",
+      "whoami": "allow",
+      "id": "allow",
+      "hostname": "allow",
+      "uname *": "allow",
+      "date": "allow",
+      "printenv *": "allow",
+      "git status": "allow",
+      "git diff *": "allow",
+      "git log *": "allow",
+      "git show *": "allow",
+      "git blame *": "allow",
+      "git branch": "allow",
+      "git remote -v": "allow",
+      "git stash list": "allow",
+      "git stash show *": "allow",
+      "mkdir *": "allow",
+      "touch *": "allow",
+      "cp *": "allow",
+      "mv *": "allow",
+      "rm *": "allow",
+      "rm -rf *": "deny",
+      "sudo *": "deny",
+      "chmod 777 *": "deny"
     },
     "external_directory": {
-      "*": "ask"
+      "*": "ask",
+      "/tmp/*": "allow",
+      "/var/tmp/*": "allow",
+      "~/.cargo/registry/*": "allow",
+      "~/.npm/*": "allow",
+      "~/go/pkg/mod/*": "allow"
     }
   }
 }
