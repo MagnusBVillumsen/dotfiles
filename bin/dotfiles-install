@@ -68,6 +68,8 @@ case "$mode" in
         link "$repo/hypr/scripts/internal-display-on" "$HOME/.local/bin/internal-display-on"
         link "$repo/hypr/scripts/monitor-hotplug" "$HOME/.local/bin/monitor-hotplug"
         link "$repo/hypr/scripts/wifi-menu" "$HOME/.local/bin/wifi-menu"
+        link "$repo/hypr/scripts/primary-monitor" "$HOME/.local/bin/primary-monitor"
+        link "$repo/hypr/scripts/waybar-launch" "$HOME/.local/bin/waybar-launch"
         link "$repo/hypr/scripts/screenshot" "$HOME/.local/bin/desktop-screenshot"
         link "$repo/bin/theme-set" "$HOME/.local/bin/theme-set"
         link "$repo/bin/wallpaper-set" "$HOME/.local/bin/wallpaper-set"

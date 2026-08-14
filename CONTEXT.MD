@@ -49,7 +49,10 @@ Never use broad destructive cleanup; only remove exact temporary build dirs.
 - `Sluk intern skærm` / `Tænd intern skærm` in the system menu use temporary
   DPMS, not a permanent monitor disable.
 - `monitor-hotplug` automatically enables `eDP-1` when all external monitors
-  disappear. It never disables the internal screen itself.
+  disappear and restarts Waybar when the monitor set changes. It never disables
+  the internal screen itself.
+- Focus follows mouse is disabled (`input:follow_mouse = 0`): the mouse can
+  move away while typing, and scrolling still works on the hovered window.
 
 ## Waybar
 
@@ -58,8 +61,13 @@ Never use broad destructive cleanup; only remove exact temporary build dirs.
   `nm-connection-editor`.
 - Ethernet currently appears as `Ethernet`; the dock interface is technically
   named `enp198s0f3u1u1`.
-- Z13 module reads `z13ctl`, CPU load/temp from `k10temp`, and GPU load/temp from
-  AMDGPU sysfs/hwmon. Example: `Z13 balanced · CPU 4% 48°C · GPU 1% 46°C`.
+- The bar shows only on the primary display. `waybar-launch` resolves the
+  primary via `primary-monitor` (largest external when docked, else `eDP-1`),
+  injects `output` into a runtime config and (re)starts Waybar; `monitor-hotplug`
+  re-runs it when the monitor set changes.
+- Z13 module reads `z13ctl`, CPU load/temp from `k10temp`, GPU load/temp from
+  AMDGPU sysfs/hwmon, and RAM from `/proc/meminfo`.
+  Example: `Z13 balanced · CPU 4% 48°C · GPU 1% 46°C · RAM 12%`.
 - Brightness module was intentionally removed from the bar.
 - Blueman connection popups are hidden by Mako criteria.
 
@@ -110,11 +118,7 @@ Hyprland Lua parsing and whitespace checks. Run it after every config change.
 
 ## Pending / next sensible work
 
-1. Verify the three optional desktop packages and Bluetooth service from a real
-   terminal if they were not already installed.
-2. Test WiFi selection, Bluetooth pairing and pavucontrol with actual devices.
-3. Confirm `nwg-displays` profile behavior after docking/undocking.
-4. Decide whether the live network text is visually too wide; if so, move the
+1. Test WiFi selection, Bluetooth pairing and pavucontrol with actual devices.
+2. Confirm `nwg-displays` profile behavior after docking/undocking.
+3. Decide whether the live network text is visually too wide; if so, move the
    exact speeds into the tooltip and keep only connection type in the bar.
-5. Build/install the patched Z13 GUI binary when network/build time permits;
-   `z13/build-z13gui` contains the reproducible build and cleanup fix.

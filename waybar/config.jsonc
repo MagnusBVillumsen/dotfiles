@@ -43,7 +43,7 @@
     "format-ethernet": "Ethernet ↓ {bandwidthDownBytes} ↑ {bandwidthUpBytes}",
     "format-disconnected": "Offline",
     "tooltip-format": "{ifname}: {ipaddr}/{cidr}\nDownload: {bandwidthDownBytes}\nUpload: {bandwidthUpBytes}",
-    "on-click": "wifi-menu",
+    "on-click": "~/.config/hypr/scripts/wifi-menu",
     "on-click-right": "nm-connection-editor"
   },
   "pulseaudio": {
@@ -62,7 +62,7 @@
     "exec": "~/.config/waybar/z13-status",
     "return-type": "json",
     "interval": 5,
-    "on-click": "z13gui",
+    "on-click": "~/.local/bin/z13gui",
     "tooltip": true
   },
   "power-profiles-daemon": {

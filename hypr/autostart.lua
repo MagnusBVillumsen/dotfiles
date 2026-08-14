@@ -3,7 +3,7 @@ hl.on("hyprland.start", function()
 
     hl.exec_cmd("mako")
     hl.exec_cmd("/usr/lib/hyprpolkitagent/hyprpolkitagent")
-    hl.exec_cmd("waybar")
+    hl.exec_cmd(home .. "/.config/hypr/scripts/waybar-launch")
     hl.exec_cmd("hyprpaper --config " .. home .. "/.config/dotfiles-theme/hyprpaper.conf")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("nm-applet --indicator")

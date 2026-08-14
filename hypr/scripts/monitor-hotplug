@@ -5,10 +5,20 @@ set -u
 exec 9="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/monitor-hotplug.lock"
 flock -n 9 || exit 0
 
+home=${HOME:?}
+last_names=""
+
 while sleep 2; do
     monitors=$(hyprctl monitors 2>/dev/null) || continue
+    names=$(awk '/^Monitor / { print $2 }' <<<"$monitors" | sort | tr '\n' ' ')
     external_count=$(awk '/^Monitor / { if ($2 != "eDP-1") count++ } END { print count + 0 }' <<<"$monitors")
+
     if [[ $external_count -eq 0 ]]; then
         hyprctl eval 'hl.dispatch(hl.dsp.dpms({ monitor = "eDP-1", action = "enable" }))' >/dev/null 2>&1 || true
     fi
+
+    if [[ -n $last_names && $names != "$last_names" ]]; then
+        "$home/.config/hypr/scripts/waybar-launch" &
+    fi
+    last_names=$names
 done

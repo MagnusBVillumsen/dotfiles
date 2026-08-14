@@ -1,7 +1,7 @@
 hl.config({
     input = {
         kb_layout = "dk",
-        follow_mouse = 1,
+        follow_mouse = 0,
         sensitivity = 0,
         touchpad = {
             natural_scroll = true,

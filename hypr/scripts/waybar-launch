@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -u
+
+home=${HOME:?}
+runtime="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+out_dir="$runtime/waybar"
+mkdir -p "$out_dir"
+
+primary=$("$home/.config/hypr/scripts/primary-monitor") || exit 1
+[[ -n $primary ]] || exit 1
+
+python3 -c '
+import json, sys
+primary, src, dst = sys.argv[1], sys.argv[2], sys.argv[3]
+with open(src) as fh:
+    data = json.load(fh)
+data["output"] = primary
+with open(dst, "w") as fh:
+    json.dump(data, fh, indent=2, ensure_ascii=False)
+' "$primary" "$home/.config/waybar/config.jsonc" "$out_dir/config.json" || exit 1
+
+pkill -x waybar 2>/dev/null || true
+exec waybar -c "$out_dir/config.json" -s "$home/.config/waybar/style.css"

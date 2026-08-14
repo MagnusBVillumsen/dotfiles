@@ -50,8 +50,15 @@ fans=$(awk '/^Fans:/ {sub(/^[^:]*:[[:space:]]*/, ""); print}' <<<"$status")
 tdp=$(awk '/^TDP:/ {sub(/^[^:]*:[[:space:]]*/, ""); print}' <<<"$status")
 battery=$(awk '/^Battery:/ {sub(/^[^:]*:[[:space:]]*/, ""); print}' <<<"$status")
 
-tooltip=$(printf 'Profile: %s\\nCPU: %s%% / %s°C\\nGPU: %s%% / %s°C\\nAPU: %s\\nFans: %s\\nTDP: %s\\nPower: %s\\nBattery: %s\\n\\nKlik for Z13 Controls' \
-    "$profile" "$cpu_percent" "$cpu_temperature" "$gpu_busy" "$gpu_temperature" "$temperature" "$fans" "$tdp" "$power" "$battery")
+mem_total=$(awk '/^MemTotal:/ {print $2}' /proc/meminfo)
+mem_avail=$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)
+mem_used=$((mem_total - mem_avail))
+mem_percent=$((mem_used * 100 / mem_total))
+mem_used_gib=$(awk -v kb="$mem_used" 'BEGIN { printf "%.1f", kb / 1024 / 1024 }')
+mem_total_gib=$(awk -v kb="$mem_total" 'BEGIN { printf "%.0f", kb / 1024 / 1024 }')
 
-printf '{"text":"Z13 %s · CPU %s%% %s°C · GPU %s%% %s°C","tooltip":"%s","class":"%s"}\n' \
-    "$profile" "$cpu_percent" "$cpu_temperature" "$gpu_busy" "$gpu_temperature" "$tooltip" "$profile"
+tooltip=$(printf 'Profile: %s\\nCPU: %s%% / %s°C\\nGPU: %s%% / %s°C\\nRAM: %s%% (%s/%s GiB)\\nAPU: %s\\nFans: %s\\nTDP: %s\\nPower: %s\\nBattery: %s\\n\\nKlik for Z13 Controls' \
+    "$profile" "$cpu_percent" "$cpu_temperature" "$gpu_busy" "$gpu_temperature" "$mem_percent" "$mem_used_gib" "$mem_total_gib" "$temperature" "$fans" "$tdp" "$power" "$battery")
+
+printf '{"text":"Z13 %s · CPU %s%% %s°C · GPU %s%% %s°C · RAM %s%%","tooltip":"%s","class":"%s"}\n' \
+    "$profile" "$cpu_percent" "$cpu_temperature" "$gpu_busy" "$gpu_temperature" "$mem_percent" "$tooltip" "$profile"
