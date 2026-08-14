@@ -8,13 +8,10 @@ user=${1:-$USER}
 tmp=$(mktemp)
 trap 'rm -f "$tmp"' EXIT
 cat >"$tmp" <<EOF
-[Service]
-ExecStart=
-ExecStart=-/sbin/agetty --autologin $user --noclear %I \$TERM
+[Autologin]
+User=$user
+Session=plasma.desktop
 EOF
 
-sudo install -Dm644 "$tmp" /etc/systemd/system/getty@tty1.service.d/override.conf
-sudo systemctl daemon-reload
-sudo systemctl enable getty@tty1.service
-printf 'TTY1 autologin er aktiveret for %s.\n' "$user"
-printf 'Hyprland starter derefter via ~/.zprofile.\n'
+sudo install -Dm644 "$tmp" /etc/sddm.conf.d/autologin.conf
+printf 'SDDM autologin er aktiveret for %s (Plasma-session).\n' "$user"

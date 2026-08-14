@@ -25,9 +25,6 @@ alias grep='grep --color=auto'
 alias vim='nvim'
 alias v='nvim'
 
-# Hyprland 0.56 vælger ellers legacy-stubben hyprland.conf som standard.
-alias start-hyprland='command /usr/bin/start-hyprland -- --config "$HOME/.config/hypr/hyprland.lua"'
-
 # ssh-agent — start automatisk hvis ikke kørende
 if [ -z "$SSH_AUTH_SOCK" ]; then
   eval "$(ssh-agent -s)" > /dev/null
@@ -75,3 +72,7 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # npm globale pakker (bruger-prefix, ingen sudo)
 export PATH="$HOME/.npm-global/bin:$PATH"
+
+
+
+export PATH="$HOME/.local/share/pi-node/node-v22.23.2-linux-x64/bin:$PATH"

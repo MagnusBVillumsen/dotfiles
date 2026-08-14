@@ -22,20 +22,14 @@ if [[ -n $apply && $apply != --apply ]]; then
 fi
 
 mkdir -p "$runtime_dir"
-for file in alacritty.toml fuzzel.ini mako.conf mako-urgent.conf waybar.css hypr.lua hyprlock.conf hyprpaper.conf tmux.conf theme.conf; do
+for file in alacritty.toml fuzzel.ini tmux.conf theme.conf; do
     install -m644 "$source_dir/$file" "$runtime_dir/$file"
 done
 
 printf '%s\n' "$theme" > "$runtime_dir/name"
-wallpaper=$(sed -n 's/^wallpaper=//p' "$source_dir/theme.conf")
-"$repo/bin/wallpaper-set" "$wallpaper" --prepare
 printf 'Forberedte temaet %s.\n' "$theme"
 
 if [[ $apply == --apply ]]; then
-    hyprctl reload config-only 2>/dev/null || true
-    makoctl reload 2>/dev/null || true
-    pkill -SIGUSR2 -x waybar 2>/dev/null || true
     tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null || true
-    "$repo/bin/wallpaper-set" "$wallpaper" --apply
-    printf 'Genindlæste det aktive desktoptema.\n'
+    printf 'Genindlæste det aktive desktoptema (tmux).\n'
 fi
