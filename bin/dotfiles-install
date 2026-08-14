@@ -42,7 +42,6 @@ case "$mode" in
         link "$repo/alacritty/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
         link "$repo/starship/starship.toml" "$HOME/.config/starship.toml"
         link "$repo/tmux/tmux.conf" "$HOME/.config/tmux/tmux.conf"
-        link "$repo/fuzzel" "$HOME/.config/fuzzel"
         link "$repo/gtk/gtk-3.0/settings.ini" "$HOME/.config/gtk-3.0/settings.ini"
         link "$repo/gtk/gtk-4.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
         link "$repo/xdg/mimeapps.list" "$HOME/.config/mimeapps.list"

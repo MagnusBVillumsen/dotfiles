@@ -7,8 +7,8 @@ sammenhæng genbruges, men uden at tvinge Claude Code eller andre appvalg ind.
 ## Med i basislaget
 
 - KDE Plasma som desktop med SDDM som display manager.
-- Zsh, Starship, tmux, Neovim, Alacritty og Fuzzel.
-- Et samlet temalag (`tokyo-night`) til Alacritty, Fuzzel og tmux.
+- Zsh, Starship, tmux, Neovim og Alacritty.
+- Et samlet temalag (`tokyo-night`) til Alacritty og tmux.
 - GTK dark-mode og Breeze-integration via repo-ejede `gtk/*/settings.ini`.
 - Eksplicitte XDG-standardapps via `xdg/mimeapps.list`.
 - Reproducerbare pakkemanifester og konfliktsikre symlinks.
@@ -41,8 +41,7 @@ fortsat separat, så en konflikt kan undersøges uden at resten gennemtvinges.
 
 ## Temaer og wallpapers
 
-Et tema er en mappe under `themes/` med app-fragmenter til Alacritty, Fuzzel
-og tmux. `bin/theme-set THEME` kopierer dem til runtime-laget
+Et tema er en mappe under `themes/` med app-fragmenter til Alacritty og tmux. `bin/theme-set THEME` kopierer dem til runtime-laget
 `~/.config/dotfiles-theme`; `--apply` genindlæser tmux. Repoets standard er
 `tokyo-night`.
 

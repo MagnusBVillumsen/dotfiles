@@ -1,7 +1,7 @@
 # Dotfiles
 
 Personlige konfigurationer til Arch Linux med KDE Plasma. Repoet indeholder
-konfiguration til Zsh, Starship, tmux, Neovim, Alacritty, Fuzzel, Pi og
+konfiguration til Zsh, Starship, tmux, Neovim, Alacritty, Pi og
 hardware-laget til ASUS ROG Flow Z13 (`z13ctl`).
 
 Desktopprofilen er beskrevet i [docs/desktop.md](docs/desktop.md).
@@ -103,7 +103,6 @@ ln -sT ~/dotfiles/nvim ~/.config/nvim
 ln -sT ~/dotfiles/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
 ln -sT ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 ln -sT ~/dotfiles/tmux/tmux.conf ~/.config/tmux/tmux.conf
-ln -sT ~/dotfiles/fuzzel ~/.config/fuzzel
 ln -sT ~/dotfiles/gtk/gtk-3.0/settings.ini ~/.config/gtk-3.0/settings.ini
 ln -sT ~/dotfiles/gtk/gtk-4.0/settings.ini ~/.config/gtk-4.0/settings.ini
 ln -sT ~/dotfiles/xdg/mimeapps.list ~/.config/mimeapps.list
@@ -124,8 +123,7 @@ for den fulde liste.
 
 ## Temaer
 
-Et tema er en mappe under `themes/` med app-fragmenter til Alacritty, Fuzzel
-og tmux. `bin/theme-set THEME` kopierer dem til det ignorerbare runtime-lag
+Et tema er en mappe under `themes/` med app-fragmenter til Alacritty og tmux. `bin/theme-set THEME` kopierer dem til det ignorerbare runtime-lag
 `~/.config/dotfiles-theme`; `--apply` genindlæser tmux. Repoets standard er
 `tokyo-night`.
 

@@ -22,7 +22,7 @@ if [[ -n $apply && $apply != --apply ]]; then
 fi
 
 mkdir -p "$runtime_dir"
-for file in alacritty.toml fuzzel.ini tmux.conf theme.conf; do
+for file in alacritty.toml tmux.conf theme.conf; do
     install -m644 "$source_dir/$file" "$runtime_dir/$file"
 done
 
