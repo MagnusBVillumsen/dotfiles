@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -u
+
+state="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/minimized-state"
+[[ -f $state && -s $state ]] || exit 0
+
+while read -r addr ws; do
+    [[ -n $addr && -n $ws ]] || continue
+    hyprctl eval "hl.dispatch(hl.dsp.focus({ window = \"address:$addr\" }))" >/dev/null 2>&1
+    hyprctl eval "hl.dispatch(hl.dsp.window.move({ workspace = \"$ws\" }))" >/dev/null 2>&1
+done < "$state"
+
+: > "$state"
+hyprctl eval 'hl.dispatch(hl.dsp.workspace.toggle_special("minimized"))' >/dev/null 2>&1

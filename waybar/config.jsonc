@@ -28,7 +28,7 @@
     "exec": "~/.config/hypr/scripts/minimized-status",
     "return-type": "json",
     "interval": 3,
-    "on-click": "~/.config/hypr/scripts/minimized-toggle",
+    "on-click": "~/.config/hypr/scripts/restore-minimized",
     "tooltip": true
   },
   "clock": {
