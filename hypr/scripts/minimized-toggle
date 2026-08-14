@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -u
+
+hyprctl eval 'hl.dispatch(hl.dsp.workspace.toggle_special("minimized"))' >/dev/null 2>&1

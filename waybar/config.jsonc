@@ -3,7 +3,7 @@
   "position": "top",
   "height": 48,
   "spacing": 6,
-  "modules-left": ["custom/system-menu", "hyprland/workspaces"],
+  "modules-left": ["custom/system-menu", "hyprland/workspaces", "custom/minimized"],
   "modules-center": ["clock"],
   "modules-right": [
     "tray",
@@ -23,6 +23,13 @@
     "format": "󰣇",
     "tooltip-format": "Systemmenu (Super+Alt+Space)",
     "on-click": "~/.config/hypr/scripts/desktop-menu"
+  },
+  "custom/minimized": {
+    "exec": "~/.config/hypr/scripts/minimized-status",
+    "return-type": "json",
+    "interval": 3,
+    "on-click": "~/.config/hypr/scripts/minimized-toggle",
+    "tooltip": true
   },
   "clock": {
     "format": "{:%a %d %b  %H:%M}",

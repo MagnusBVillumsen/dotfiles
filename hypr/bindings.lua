@@ -14,6 +14,8 @@ return function(programs)
     hl.bind(mod .. " + Q", hl.dsp.window.close(), { description = "Luk aktivt vindue" })
     hl.bind(mod .. " + F", hl.dsp.window.fullscreen(), { description = "Fuld skærm til/fra" })
     hl.bind(mod .. " + V", hl.dsp.window.float({ action = "toggle" }), { description = "Flydende vindue til/fra" })
+    hl.bind(mod .. " + M", hl.dsp.window.move({ workspace = "special:minimized" }), { description = "Minimér aktivt vindue" })
+    hl.bind(mod .. " + ALT + M", hl.dsp.workspace.toggle_special("minimized"), { description = "Vis/skjul minimerede vinduer" })
     hl.bind(mod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprlock"), { description = "Lås skærmen" })
     hl.bind(mod .. " + SHIFT + M", hl.dsp.exit(), { description = "Afslut Hyprland" })
 

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -u
+
+icon="󰖰"
+
+clients=$(hyprctl clients -j 2>/dev/null) || { printf '{"text":"","tooltip":""}\n'; exit 0; }
+
+python3 -c '
+import json, sys
+icon = sys.argv[1]
+data = json.load(sys.stdin)
+minimized = [c for c in data if c.get("workspace", {}).get("name") == "special:minimized"]
+if not minimized:
+    out = {"text": "", "tooltip": ""}
+else:
+    titles = "\n".join(c.get("title") or c.get("class") or "?" for c in minimized)
+    out = {"text": f"{icon} {len(minimized)}", "tooltip": titles}
+print(json.dumps(out, ensure_ascii=False))
+' "$icon" <<<"$clients"

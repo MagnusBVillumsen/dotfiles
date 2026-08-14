@@ -43,6 +43,8 @@ Never use broad destructive cleanup; only remove exact temporary build dirs.
   wallpaper, lock, suspend, logout, reboot, poweroff).
 - Super+B: hide/show Waybar.
 - Super+V: toggle floating/tiling for the focused window.
+- Super+M: minimize the focused window (moves it to a hidden special workspace).
+- Super+Alt+M: show/hide minimized windows (they appear as floating).
 - ROG GUI: press Super+R, release Super, then O, then G; alternatively click
   the Z13 Waybar field or run `z13gui`.
 - `Super+Alt+Space -> Skærme` opens `nwg-displays`.
@@ -68,6 +70,8 @@ Never use broad destructive cleanup; only remove exact temporary build dirs.
 - Z13 module reads `z13ctl`, CPU load/temp from `k10temp`, GPU load/temp from
   AMDGPU sysfs/hwmon, and RAM from `/proc/meminfo`.
   Example: `Z13 balanced · CPU 4% 48°C · GPU 1% 46°C · RAM 12%`.
+- A `custom/minimized` module shows `󰖰 N` when windows are minimized; clicking
+  it toggles the minimized windows back into view.
 - Brightness module was intentionally removed from the bar.
 - Blueman connection popups are hidden by Mako criteria.
 

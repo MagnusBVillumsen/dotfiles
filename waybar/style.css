@@ -57,6 +57,11 @@ window#waybar {
   font-size: 20px;
 }
 
+#custom-minimized {
+  color: @blue;
+  margin: 6px 0 6px 6px;
+}
+
 #custom-keybindings {
   border-radius: 0 8px 8px 0;
   color: @foreground;
