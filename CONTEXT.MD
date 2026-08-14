@@ -4,6 +4,11 @@ Updated: 2026-08-14 (Europe/Copenhagen)
 
 ## Goal
 
+> **Status (2026-08-14):** Hyprland-opstillingen er pensioneret til fordel for
+> **KDE Plasma**. Resten af dette dokument er arkiv for den gamle Hyprland-løsning.
+> Genbrugelige dele (zsh, neovim, tmux, alacritty, starship, fuzzel, z13ctl,
+> wallpapers) flytter med. Se `hurtigt-symlink` til hurtig genopsætning.
+
 Build a practical, non-opinionated Omarchy-inspired Hyprland desktop for the
 ROG Flow Z13. No Claude Code or forced AI applications. Keep configuration
 repo-owned under `~/dotfiles` and expose it through symlinks.

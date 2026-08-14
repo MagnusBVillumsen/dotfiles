@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Hurtig opsætning efter frisk installation.
+# Kør fra repo-roden:  ~/dotfiles/hurtigt-symlink
+#
+# Gør:
+#  1. Symlinker alle dotfiles (inkl. pi-konfiguration) til $HOME.
+#  2. Installerer pi CLI'en (npm) hvis den mangler.
+#  3. Sætter tmux-plugins op.
+
+set -euo pipefail
+
+repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+
+printf '== 1/3 Symlinker dotfiles ==\n'
+"$repo/bin/dotfiles-install" --link
+
+printf '\n== 2/3 Installerer pi ==\n'
+if command -v pi >/dev/null 2>&1; then
+    printf 'pi findes allerede: %s\n' "$(command -v pi)"
+else
+    command -v npm >/dev/null 2>&1 || {
+        printf 'npm mangler. Installér først: sudo pacman -S --needed nodejs npm\n' >&2
+        exit 1
+    }
+    npm install -g --prefix "$HOME/.local" @earendil-works/pi-coding-agent
+    printf 'pi installeret.\n'
+fi
+
+printf '\n== 3/3 Tmux-plugins ==\n'
+"$repo/bin/install-user-tools"
+
+printf '\nFærdig! Næste skridt:\n'
+printf '  1. Åbn en ny terminal (eller: source ~/.zshrc)\n'
+printf '  2. "pi auth" for at logge ind igen (auth.json er ikke i repo)\n'
+printf '  3. "pi" — så hjælper pi med at installere sine pakker og resten\n'
