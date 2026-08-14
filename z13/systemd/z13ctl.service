@@ -1,0 +1,13 @@
+[Unit]
+Description=z13ctl daemon for ASUS ROG Flow Z13
+Documentation=https://github.com/dahui/z13ctl
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/z13ctl daemon
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target

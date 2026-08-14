@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script=$(readlink -f -- "${BASH_SOURCE[0]}")
+repo=$(cd -- "$(dirname -- "$script")/../.." && pwd)
+
+choice=$(
+    find "$repo/wallpapers" -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) -print |
+        sort |
+        sed "s|^$repo/wallpapers/||" |
+        fuzzel --dmenu --prompt 'Wallpaper  ' --width 48 --lines 12
+) || exit 0
+
+"$repo/bin/wallpaper-set" "wallpapers/$choice" --apply

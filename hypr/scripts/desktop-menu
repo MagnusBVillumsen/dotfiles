@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script=$(readlink -f -- "${BASH_SOURCE[0]}")
+script_dir=$(dirname -- "$script")
+
+choice=$(printf '%s\n' \
+    '󰍹  Z13 Controls' \
+    '󰂯  Bluetooth' \
+    '󰕾  Lyd' \
+    '󰍹  Skærme' \
+    '󰍺  Sluk intern skærm' \
+    '󰍹  Tænd intern skærm' \
+    '󰏘  Vælg tema' \
+    '󰸉  Vælg wallpaper' \
+    '󰌾  Lås skærmen' \
+    '󰒲  Suspendér' \
+    '󰍃  Log ud af Hyprland' \
+    '󰜉  Genstart' \
+    '󰐥  Sluk' |
+    fuzzel --dmenu --prompt 'System  ' --width 38 --lines 8) || exit 0
+
+case "$choice" in
+    *'Z13 Controls') z13gui ;;
+    *'Bluetooth') blueman-manager ;;
+    *'Lyd') pavucontrol ;;
+    *'Skærme') nwg-displays ;;
+    *'Sluk intern skærm') "$script_dir/internal-display-off" ;;
+    *'Tænd intern skærm') "$script_dir/internal-display-on" ;;
+    *'Vælg tema') exec "$script_dir/theme-menu" ;;
+    *'Vælg wallpaper') exec "$script_dir/wallpaper-menu" ;;
+    *'Lås skærmen') hyprlock ;;
+    *'Suspendér') systemctl suspend ;;
+    *'Log ud af Hyprland') hyprctl eval 'hl.dispatch(hl.dsp.exit())' ;;
+    *'Genstart') action='reboot' ;;
+    *'Sluk') action='poweroff' ;;
+    *) exit 0 ;;
+esac
+
+if [[ ${action:-} ]]; then
+    confirmation=$(printf '%s\n' 'Nej' 'Ja' |
+        fuzzel --dmenu --prompt "Bekræft ${action}  " --width 32 --lines 2) || exit 0
+    [[ $confirmation == 'Ja' ]] && systemctl "$action"
+fi

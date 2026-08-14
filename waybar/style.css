@@ -1,0 +1,73 @@
+@import url("../dotfiles-theme/waybar.css");
+
+* {
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 16px;
+}
+
+window#waybar {
+  background: alpha(@background, 0.94);
+  color: @foreground;
+}
+
+#workspaces button {
+  padding: 0 14px;
+  color: @muted;
+  background: transparent;
+}
+
+#workspaces button.active {
+  color: @blue;
+  box-shadow: inset 0 -2px @blue;
+}
+
+#workspaces button.urgent,
+#battery.critical {
+  color: @red;
+}
+
+#window,
+#clock,
+#custom-system-menu,
+#custom-keybindings,
+#tray,
+#network,
+#pulseaudio,
+#backlight,
+#custom-z13,
+#power-profiles-daemon,
+#battery {
+  margin: 6px 0;
+  padding: 0 14px;
+  background: @surface;
+}
+
+#window,
+#clock {
+  border-radius: 8px;
+}
+
+#custom-system-menu {
+  margin-left: 8px;
+  border-radius: 8px 0 0 8px;
+  color: @blue;
+  font-size: 20px;
+}
+
+#custom-keybindings {
+  border-radius: 0 8px 8px 0;
+  color: @foreground;
+  font-size: 19px;
+}
+
+#tray {
+  border-radius: 8px 0 0 8px;
+}
+
+#battery {
+  margin-right: 8px;
+  border-radius: 0 8px 8px 0;
+}

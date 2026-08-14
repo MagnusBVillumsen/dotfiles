@@ -1,0 +1,1 @@
+-- Monitor layouts are managed by nwg-displays in ../monitors.lua.

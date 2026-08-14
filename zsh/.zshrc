@@ -13,7 +13,9 @@ setopt APPEND_HISTORY
 
 # PATH
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$PATH:$(go env GOPATH 2>/dev/null)"
+if command -v go >/dev/null 2>&1; then
+  export PATH="$PATH:$(go env GOPATH)/bin"
+fi
 
 # Aliases
 alias ls='ls --color=auto'
@@ -22,6 +24,9 @@ alias la='ls -A --color=auto'
 alias grep='grep --color=auto'
 alias vim='nvim'
 alias v='nvim'
+
+# Hyprland 0.56 vælger ellers legacy-stubben hyprland.conf som standard.
+alias start-hyprland='command /usr/bin/start-hyprland -- --config "$HOME/.config/hypr/hyprland.lua"'
 
 # ssh-agent — start automatisk hvis ikke kørende
 if [ -z "$SSH_AUTH_SOCK" ]; then

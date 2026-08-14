@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+tpm_dir="$HOME/.config/tmux/plugins/tpm"
+if [[ -d $tpm_dir/.git ]]; then
+    printf 'TPM findes allerede i %s.\n' "$tpm_dir"
+elif [[ -e $tpm_dir ]]; then
+    printf 'Konflikt: %s findes, men er ikke et Git-repository.\n' "$tpm_dir" >&2
+    exit 1
+else
+    mkdir -p "$(dirname "$tpm_dir")"
+    git clone --depth 1 https://github.com/tmux-plugins/tpm "$tpm_dir"
+fi
+
+if [[ -x $tpm_dir/bin/install_plugins ]]; then
+    "$tpm_dir/bin/install_plugins"
+fi

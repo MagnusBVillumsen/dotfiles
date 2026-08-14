@@ -1,0 +1,88 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 48,
+  "spacing": 6,
+  "modules-left": ["custom/system-menu", "custom/keybindings", "hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock"],
+  "modules-right": [
+    "tray",
+    "network",
+    "pulseaudio",
+    "custom/z13",
+    "power-profiles-daemon",
+    "battery"
+  ],
+
+  "hyprland/workspaces": {
+    "disable-scroll": true,
+    "all-outputs": true,
+    "format": "{name}"
+  },
+  "custom/system-menu": {
+    "format": "󰣇",
+    "tooltip-format": "Systemmenu (Super+Alt+Space)",
+    "on-click": "~/.config/hypr/scripts/desktop-menu"
+  },
+  "custom/keybindings": {
+    "format": "󰌌",
+    "tooltip-format": "Keybindings (Super+K)",
+    "on-click": "~/.config/hypr/scripts/keybindings-menu"
+  },
+  "hyprland/window": {
+    "max-length": 50,
+    "separate-outputs": true
+  },
+  "clock": {
+    "format": "{:%a %d %b  %H:%M}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>"
+  },
+  "network": {
+    "interval": 1,
+    "format-wifi": "WiFi ↓ {bandwidthDownBytes} ↑ {bandwidthUpBytes}",
+    "format-ethernet": "Ethernet ↓ {bandwidthDownBytes} ↑ {bandwidthUpBytes}",
+    "format-disconnected": "Offline",
+    "tooltip-format": "{ifname}: {ipaddr}/{cidr}\nDownload: {bandwidthDownBytes}\nUpload: {bandwidthUpBytes}",
+    "on-click": "wifi-menu",
+    "on-click-right": "nm-connection-editor"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "  muted",
+    "on-click": "pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "format-icons": ["", "", ""]
+  },
+  "backlight": {
+    "format": "Lys {percent}%",
+    "on-scroll-up": "brightnessctl set +5%",
+    "on-scroll-down": "brightnessctl set 5%-"
+  },
+  "custom/z13": {
+    "exec": "~/.config/waybar/z13-status",
+    "return-type": "json",
+    "interval": 5,
+    "on-click": "z13gui",
+    "tooltip": true
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "",
+      "performance": "󰐥",
+      "balanced": "",
+      "power-saver": ""
+    }
+  },
+  "battery": {
+    "states": { "warning": 25, "critical": 10 },
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "tray": {
+    "spacing": 10
+  }
+}

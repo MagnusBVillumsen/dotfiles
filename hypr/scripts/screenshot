@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+mode=${1:-area}
+directory=${XDG_PICTURES_DIR:-$HOME/Pictures}/Screenshots
+timestamp=$(date +'%Y-%m-%d_%H-%M-%S')
+target="$directory/screenshot_$timestamp.png"
+
+mkdir -p "$directory"
+
+case "$mode" in
+    area)
+        geometry=$(slurp) || exit 0
+        grim -g "$geometry" "$target"
+        ;;
+    screen)
+        grim "$target"
+        ;;
+    *)
+        printf 'Brug: %s [area|screen]\n' "$0" >&2
+        exit 2
+        ;;
+esac
+
+wl-copy --type image/png < "$target"
+notify-send 'Screenshot gemt og kopieret' "$target"

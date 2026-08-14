@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script=$(readlink -f -- "${BASH_SOURCE[0]}")
+hyprctl -j binds | node "$(dirname "$script")/keybindings-menu.js" |
+    fuzzel --dmenu --prompt "Keybindings  " --width 72 --lines 18

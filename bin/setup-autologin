@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+user=${1:-$USER}
+[[ $user != root ]] || { printf 'Refusing to configure root autologin.\n' >&2; exit 1; }
+
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT
+cat >"$tmp" <<EOF
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin $user --noclear %I \$TERM
+EOF
+
+sudo install -Dm644 "$tmp" /etc/systemd/system/getty@tty1.service.d/override.conf
+sudo systemctl daemon-reload
+sudo systemctl enable getty@tty1.service
+printf 'TTY1 autologin er aktiveret for %s.\n' "$user"
+printf 'Hyprland starter derefter via ~/.zprofile.\n'

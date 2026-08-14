@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script=$(readlink -f -- "${BASH_SOURCE[0]}")
+repo=$(cd -- "$(dirname -- "$script")/.." && pwd)
+wallpaper=${1:-}
+mode=${2:---apply}
+runtime_dir="${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles-theme"
+
+if [[ -z $wallpaper ]]; then
+    printf 'Brug: %s WALLPAPER [--prepare|--apply]\n' "$0" >&2
+    exit 2
+fi
+
+if [[ $mode != --prepare && $mode != --apply ]]; then
+    printf 'Ukendt argument: %s\n' "$mode" >&2
+    exit 2
+fi
+
+if [[ $wallpaper != /* ]]; then
+    wallpaper="$repo/$wallpaper"
+fi
+wallpaper=$(readlink -f -- "$wallpaper")
+
+if [[ ! -f $wallpaper ]]; then
+    printf 'Wallpaper findes ikke: %s\n' "$wallpaper" >&2
+    exit 1
+fi
+
+mkdir -p "$runtime_dir"
+printf 'ipc = on\nsplash = false\npreload = %s\nwallpaper = ,%s\n' \
+    "$wallpaper" "$wallpaper" > "$runtime_dir/hyprpaper.conf"
+printf '$wallpaper = %s\n' "$wallpaper" > "$runtime_dir/wallpaper.conf"
+printf '%s\n' "$wallpaper" > "$runtime_dir/wallpaper"
+
+case "$mode" in
+    --prepare) ;;
+    --apply)
+        pkill -x hyprpaper 2>/dev/null || true
+        hyprctl eval 'hl.exec_cmd("hyprpaper --config '"$runtime_dir"'/hyprpaper.conf")' 2>/dev/null || true
+        ;;
+esac

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script=$(readlink -f -- "${BASH_SOURCE[0]}")
+repo=$(cd -- "$(dirname -- "$script")/.." && pwd)
+theme=${1:-}
+apply=${2:-}
+source_dir="$repo/themes/$theme"
+runtime_dir="${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles-theme"
+
+if [[ -z $theme || ! -d $source_dir ]]; then
+    printf 'Tilgængelige temaer:\n' >&2
+    find "$repo/themes" -mindepth 1 -maxdepth 1 -type d -printf '  %f\n' | sort >&2
+    printf '\nBrug: %s THEME [--apply]\n' "$0" >&2
+    exit 2
+fi
+
+if [[ -n $apply && $apply != --apply ]]; then
+    printf 'Ukendt argument: %s\n' "$apply" >&2
+    exit 2
+fi
+
+mkdir -p "$runtime_dir"
+for file in alacritty.toml fuzzel.ini mako.conf mako-urgent.conf waybar.css hypr.lua hyprlock.conf hyprpaper.conf tmux.conf theme.conf; do
+    install -m644 "$source_dir/$file" "$runtime_dir/$file"
+done
+
+printf '%s\n' "$theme" > "$runtime_dir/name"
+wallpaper=$(sed -n 's/^wallpaper=//p' "$source_dir/theme.conf")
+"$repo/bin/wallpaper-set" "$wallpaper" --prepare
+printf 'Forberedte temaet %s.\n' "$theme"
+
+if [[ $apply == --apply ]]; then
+    hyprctl reload config-only 2>/dev/null || true
+    makoctl reload 2>/dev/null || true
+    pkill -SIGUSR2 -x waybar 2>/dev/null || true
+    tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null || true
+    "$repo/bin/wallpaper-set" "$wallpaper" --apply
+    printf 'Genindlæste det aktive desktoptema.\n'
+fi

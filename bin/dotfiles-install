@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script=$(readlink -f -- "${BASH_SOURCE[0]}")
+repo=$(cd -- "$(dirname -- "$script")/.." && pwd)
+mode=${1:---check}
+
+link() {
+    local source=$1
+    local destination=$2
+
+    mkdir -p "$(dirname "$destination")"
+    if [[ -L $destination && $(readlink -f "$destination") == $(readlink -f "$source") ]]; then
+        printf 'ok      %s\n' "$destination"
+    elif [[ -e $destination || -L $destination ]]; then
+        printf 'konflikt %s\n' "$destination" >&2
+        return 1
+    else
+        ln -s "$source" "$destination"
+        printf 'link    %s -> %s\n' "$destination" "$source"
+    fi
+}
+
+mapfile -t packages < <(
+    sed -E '/^[[:space:]]*(#|$)/d' "$repo/packages/core.txt" "$repo/packages/desktop.txt"
+)
+
+case "$mode" in
+    --check)
+        printf 'Pakker i den planlagte installation: %d\n\n' "${#packages[@]}"
+        pacman -T "${packages[@]}" || true
+        ;;
+    --install)
+        sudo pacman -S --needed "${packages[@]}"
+        ;;
+    --link)
+        "$repo/bin/theme-set" tokyo-night
+        link "$repo/zsh/.zshrc" "$HOME/.zshrc"
+        link "$repo/zsh/.zprofile" "$HOME/.zprofile"
+        link "$repo/nvim" "$HOME/.config/nvim"
+        link "$repo/alacritty/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
+        link "$repo/starship/starship.toml" "$HOME/.config/starship.toml"
+        link "$repo/tmux/tmux.conf" "$HOME/.config/tmux/tmux.conf"
+        link "$repo/hypr" "$HOME/.config/hypr"
+        link "$repo/waybar" "$HOME/.config/waybar"
+        link "$repo/fuzzel" "$HOME/.config/fuzzel"
+        link "$repo/mako" "$HOME/.config/mako"
+        link "$repo/hyprpaper" "$HOME/.config/hyprpaper"
+        link "$repo/gtk/gtk-3.0/settings.ini" "$HOME/.config/gtk-3.0/settings.ini"
+        link "$repo/gtk/gtk-4.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
+        link "$repo/xdg/mimeapps.list" "$HOME/.config/mimeapps.list"
+        link "$repo/pi/AGENTS.md" "$HOME/.pi/agent/AGENTS.md"
+        link "$repo/pi/settings.json" "$HOME/.pi/agent/settings.json"
+        link "$repo/pi/models.json" "$HOME/.pi/agent/models.json"
+        link "$repo/pi/extensions/pi-permission-system/config.json" "$HOME/.pi/agent/extensions/pi-permission-system/config.json"
+        link "$repo/pi/skills/pdf-noter/SKILL.md" "$HOME/.pi/agent/skills/pdf-noter/SKILL.md"
+        link "$repo/z13/systemd/z13ctl.socket" "$HOME/.config/systemd/user/z13ctl.socket"
+        link "$repo/z13/systemd/z13ctl.service" "$HOME/.config/systemd/user/z13ctl.service"
+        link "$repo/z13/systemd/z13gui.service" "$HOME/.config/systemd/user/z13gui.service"
+        link "$repo/z13/z13gui.desktop" "$HOME/.local/share/applications/z13gui.desktop"
+        link "$repo/hypr/scripts/focus-mode" "$HOME/.local/bin/focus-mode"
+        link "$repo/hypr/scripts/desktop-menu" "$HOME/.local/bin/desktop-menu"
+        link "$repo/hypr/scripts/keybindings-menu" "$HOME/.local/bin/keybindings-menu"
+        link "$repo/hypr/scripts/theme-menu" "$HOME/.local/bin/theme-menu"
+        link "$repo/hypr/scripts/wallpaper-menu" "$HOME/.local/bin/wallpaper-menu"
+        link "$repo/hypr/scripts/internal-display-off" "$HOME/.local/bin/internal-display-off"
+        link "$repo/hypr/scripts/internal-display-on" "$HOME/.local/bin/internal-display-on"
+        link "$repo/hypr/scripts/monitor-hotplug" "$HOME/.local/bin/monitor-hotplug"
+        link "$repo/hypr/scripts/wifi-menu" "$HOME/.local/bin/wifi-menu"
+        link "$repo/hypr/scripts/screenshot" "$HOME/.local/bin/desktop-screenshot"
+        link "$repo/bin/theme-set" "$HOME/.local/bin/theme-set"
+        link "$repo/bin/wallpaper-set" "$HOME/.local/bin/wallpaper-set"
+        systemctl --user daemon-reload 2>/dev/null || true
+        systemctl --user disable --now z13ctl.socket 2>/dev/null || true
+        pkill -TERM -u "$USER" -f "$HOME/.local/bin/z13ctl daemon" 2>/dev/null || true
+        systemctl --user enable --now z13ctl.service 2>/dev/null || true
+        ;;
+    --activate)
+        if hyprctl instances >/dev/null 2>&1; then
+            "$repo/bin/theme-set" tokyo-night --apply
+            hyprctl reload config-only
+        else
+            "$repo/bin/theme-set" tokyo-night
+            printf 'Ingen Hyprland-session kører; temaet er forberedt til næste login.\n'
+        fi
+        systemctl --user daemon-reload 2>/dev/null || true
+        printf 'Desktoplaget er aktiveret. Log ud og ind for at validere hele autostarten.\n'
+        ;;
+    --z13)
+        sudo pacman -S --needed go gtk4 gtk4-layer-shell
+        "$repo/z13/install-z13ctl"
+        "$repo/z13/build-z13gui"
+        "$HOME/.local/bin/z13ctl" --dry-run setup
+        sudo "$HOME/.local/bin/z13ctl" setup
+        ;;
+    --setup)
+        "$script" --install
+        "$script" --link
+        "$repo/bin/install-user-tools"
+        "$script" --activate
+        ;;
+    --plugins)
+        "$repo/bin/install-user-tools"
+        ;;
+    --autologin)
+        "$repo/bin/setup-autologin" "$USER"
+        ;;
+    *)
+        printf 'Brug: %s [--check|--install|--link|--plugins|--activate|--setup|--z13|--autologin]\n' "$0" >&2
+        exit 2
+        ;;
+esac

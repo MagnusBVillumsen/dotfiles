@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+set -u
+
+monitor="eDP-1"
+touch_device="elan9008:00-04f3:43c7"
+stylus_device="elan9008:00-04f3:43c7-stylus"
+
+exec 9>"${XDG_RUNTIME_DIR}/hypr-auto-rotate.lock"
+flock -n 9 || exit 0
+
+apply_orientation() {
+    local orientation="$1"
+    local transform
+
+    case "$orientation" in
+        normal) transform=0 ;;
+        left-up) transform=1 ;;
+        bottom-up) transform=2 ;;
+        right-up) transform=3 ;;
+        *) return 0 ;;
+    esac
+
+    hyprctl eval "
+        hl.monitor({
+            output = \"${monitor}\",
+            mode = \"2560x1600@180\",
+            position = \"0x0\",
+            scale = 1,
+            transform = ${transform},
+        })
+        hl.device({ name = \"${touch_device}\", transform = ${transform} })
+        hl.device({ name = \"${stylus_device}\", transform = ${transform} })
+    " >/dev/null || return 1
+
+    printf 'orientation=%s transform=%s\n' "$orientation" "$transform"
+}
+
+stdbuf -oL monitor-sensor --accel 2>&1 |
+    while IFS= read -r line; do
+        case "$line" in
+            *"Accelerometer orientation changed: "*)
+                apply_orientation "${line##*: }"
+                ;;
+        esac
+    done

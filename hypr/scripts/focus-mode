@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -u
+
+if ! pgrep -x waybar >/dev/null; then
+    printf 'focus-mode: Waybar kører ikke\n' >&2
+    exit 1
+fi
+
+pkill -USR1 -x waybar

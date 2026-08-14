@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Z13 Controls
+Comment=Touchvenlig hardwarekontrol til ASUS ROG Flow Z13
+Exec=z13gui
+Icon=preferences-system
+Categories=Utility;System;
+Keywords=rog;asus;z13;lighting;fan;tdp;

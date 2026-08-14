@@ -1,0 +1,20 @@
+diff --git a/internal/gui/layershell/layershell.go b/internal/gui/layershell/layershell.go
+--- a/internal/gui/layershell/layershell.go
++++ b/internal/gui/layershell/layershell.go
+@@ -140,11 +140,11 @@ func (b *Backend) Configure(isVisible func() bool, onDismiss func()) {
+ 			slog.Debug("focus lost too soon after show, ignoring")
+ 			return
+ 		}
+-		if b.pointerInside {
+-			slog.Debug("focus lost but pointer inside drawer, ignoring spurious drop")
+-			return
+-		}
+-		slog.Debug("focus lost with pointer outside, dismissing after delay")
++		// Hyprland may not deliver a leave event when focus moves directly from
++		// this layer surface to a regular window. In that case pointerInside is
++		// stale and must not prevent a genuine focus-loss dismissal. The settle
++		// window above still filters transient focus loss while showing.
++		slog.Debug("focus lost, dismissing after delay", "pointerInside", b.pointerInside)
+ 		glib.TimeoutAdd(focusLossDelay, func() bool {
+ 			if !isVisible() || b.appWin.IsActive() {
+ 				slog.Debug("dismiss cancelled: hidden or refocused")

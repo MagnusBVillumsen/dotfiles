@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -u
+
+status=$(z13ctl status 2>/dev/null) || {
+    printf '{"text":" Z13","tooltip":"z13ctl daemon svarer ikke","class":"error"}\n'
+    exit 0
+}
+
+state_file="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/z13-waybar-cpu"
+read -r _ user nice system idle iowait irq softirq steal _ </proc/stat
+total=$((user + nice + system + idle + iowait + irq + softirq + steal))
+busy=$((total - idle - iowait))
+cpu_percent=0
+if read -r previous_total previous_busy <"$state_file" 2>/dev/null; then
+    total_delta=$((total - previous_total))
+    busy_delta=$((busy - previous_busy))
+    if (( total_delta > 0 )); then
+        cpu_percent=$((busy_delta * 100 / total_delta))
+    fi
+fi
+printf '%s %s\n' "$total" "$busy" >"$state_file"
+
+hwmon_value() {
+    local wanted=$1 pattern=$2 dir
+    for dir in /sys/class/hwmon/hwmon*; do
+        [[ -r $dir/name && $(<"$dir/name") == "$wanted" ]] || continue
+        for value in "$dir"/$pattern; do
+            [[ -r $value ]] || continue
+            awk '{printf "%.0f", $1 / 1000}' "$value"
+            return
+        done
+    done
+    printf '?'
+}
+
+cpu_temperature=$(hwmon_value k10temp 'temp*_input')
+gpu_temperature=$(hwmon_value amdgpu 'temp*_input')
+gpu_busy='?'
+for gpu_busy_path in /sys/class/drm/card*/device/gpu_busy_percent; do
+    [[ -r $gpu_busy_path ]] || continue
+    gpu_busy=$(<"$gpu_busy_path")
+    break
+done
+
+temperature=$(awk '/^APU:/ {print $2}' <<<"$status")
+profile=$(awk '/^Profile:/ {print $2}' <<<"$status")
+power=$(awk '/^Power:/ {print $2}' <<<"$status")
+fans=$(awk '/^Fans:/ {sub(/^[^:]*:[[:space:]]*/, ""); print}' <<<"$status")
+tdp=$(awk '/^TDP:/ {sub(/^[^:]*:[[:space:]]*/, ""); print}' <<<"$status")
+battery=$(awk '/^Battery:/ {sub(/^[^:]*:[[:space:]]*/, ""); print}' <<<"$status")
+
+tooltip=$(printf 'Profile: %s\\nCPU: %s%% / %s°C\\nGPU: %s%% / %s°C\\nAPU: %s\\nFans: %s\\nTDP: %s\\nPower: %s\\nBattery: %s\\n\\nKlik for Z13 Controls' \
+    "$profile" "$cpu_percent" "$cpu_temperature" "$gpu_busy" "$gpu_temperature" "$temperature" "$fans" "$tdp" "$power" "$battery")
+
+printf '{"text":"Z13 %s · CPU %s%% %s°C · GPU %s%% %s°C","tooltip":"%s","class":"%s"}\n' \
+    "$profile" "$cpu_percent" "$cpu_temperature" "$gpu_busy" "$gpu_temperature" "$tooltip" "$profile"

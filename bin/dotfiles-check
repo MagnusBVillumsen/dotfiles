@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script=$(readlink -f -- "${BASH_SOURCE[0]}")
+repo=$(cd -- "$(dirname -- "$script")/.." && pwd)
+
+printf 'Shellscripts...\n'
+while IFS= read -r script; do
+    bash -n "$script"
+done < <(find "$repo/bin" "$repo/hypr/scripts" "$repo/z13" -type f \
+    -exec awk 'FNR == 1 && /^#!.*(ba|z)sh/ { print FILENAME }' {} +)
+
+printf 'JavaScript...\n'
+node --check "$repo/hypr/scripts/keybindings-menu.js"
+
+printf 'Waybar JSON...\n'
+node -e 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))' \
+    "$repo/waybar/config.jsonc"
+
+printf 'Hyprland Lua...\n'
+Hyprland --verify-config --config "$repo/hypr/hyprland.lua"
+
+printf 'Whitespace...\n'
+git -C "$repo" diff --check
+
+printf 'Alle statiske checks bestod.\n'

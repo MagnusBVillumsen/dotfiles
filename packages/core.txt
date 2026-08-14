@@ -1,0 +1,18 @@
+# Basissystem og terminalværktøjer
+alacritty
+base-devel
+bat
+fd
+fzf
+git
+neovim
+nodejs
+npm
+ripgrep
+starship
+tmux
+ttf-jetbrains-mono-nerd
+unzip
+zsh
+zsh-autosuggestions
+zsh-syntax-highlighting

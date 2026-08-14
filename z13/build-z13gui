@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script=$(readlink -f -- "${BASH_SOURCE[0]}")
+repo=$(cd -- "$(dirname -- "$script")/.." && pwd)
+version=${Z13GUI_VERSION:-v1.4.0}
+workdir=$(mktemp -d /tmp/z13gui-build.XXXXXX)
+# Go's module cache intentionally contains read-only directories. Make the
+# private temporary tree removable before cleaning it up.
+cleanup() {
+  chmod -R u+w "$workdir" 2>/dev/null || true
+  rm -rf "$workdir"
+}
+trap cleanup EXIT
+
+git clone --depth 1 --branch "$version" https://github.com/dahui/z13gui.git "$workdir/source"
+git -C "$workdir/source" apply "$repo/z13/patches/0001-hyprland-dismiss-on-focus-loss.patch"
+
+GOCACHE="$workdir/go-cache" GOPATH="$workdir/go" go -C "$workdir/source" test ./...
+GOCACHE="$workdir/go-cache" GOPATH="$workdir/go" go -C "$workdir/source" \
+    build -trimpath -ldflags='-s -w' -o "$workdir/z13gui" .
+
+install -Dm755 "$workdir/z13gui" "$HOME/.local/bin/z13gui"
+printf 'Installerede z13gui %s med Hyprland focus-loss-fix.\n' "$version"

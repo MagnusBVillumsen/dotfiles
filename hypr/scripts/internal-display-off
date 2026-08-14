@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -euo pipefail
+hyprctl eval 'hl.dispatch(hl.dsp.dpms({ monitor = "eDP-1", action = "disable" }))'

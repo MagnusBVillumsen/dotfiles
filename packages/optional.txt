@@ -1,0 +1,13 @@
+# Flyt valgte pakker til en aktiv manifestfil, når de ønskes installeret.
+# btop
+# deno
+# docker
+# docker-compose
+# flatpak
+# github-cli
+# go
+# lazygit
+# localsend
+# obsidian
+# steam
+# swappy
