@@ -3,7 +3,7 @@
   "position": "top",
   "height": 48,
   "spacing": 6,
-  "modules-left": ["custom/system-menu", "custom/keybindings", "hyprland/workspaces", "hyprland/window"],
+  "modules-left": ["custom/system-menu", "hyprland/workspaces"],
   "modules-center": ["clock"],
   "modules-right": [
     "tray",
@@ -23,15 +23,6 @@
     "format": "󰣇",
     "tooltip-format": "Systemmenu (Super+Alt+Space)",
     "on-click": "~/.config/hypr/scripts/desktop-menu"
-  },
-  "custom/keybindings": {
-    "format": "󰌌",
-    "tooltip-format": "Keybindings (Super+K)",
-    "on-click": "~/.config/hypr/scripts/keybindings-menu"
-  },
-  "hyprland/window": {
-    "max-length": 50,
-    "separate-outputs": true
   },
   "clock": {
     "format": "{:%a %d %b  %H:%M}",
