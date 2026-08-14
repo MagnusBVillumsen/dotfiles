@@ -48,8 +48,8 @@ Never use broad destructive cleanup; only remove exact temporary build dirs.
 - ROG GUI: press Super+R, release Super, then O, then G; alternatively click
   the Z13 Waybar field or run `z13gui`.
 - `Super+Alt+Space -> Skærme` opens `nwg-displays`.
-- `Sluk intern skærm` / `Tænd intern skærm` in the system menu use temporary
-  DPMS, not a permanent monitor disable.
+- `Sluk intern skærm` / `Tænd intern skærm` disable/re-enable the `eDP-1`
+  monitor (so it leaves the Waybar workspace list) and toggle DPMS.
 - `monitor-hotplug` automatically enables `eDP-1` when all external monitors
   disappear and restarts Waybar when the monitor set changes. It never disables
   the internal screen itself.

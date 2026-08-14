@@ -17,7 +17,6 @@ return function(programs)
     hl.bind(mod .. " + M", hl.dsp.window.move({ workspace = "special:minimized" }), { description = "Minimér aktivt vindue" })
     hl.bind(mod .. " + ALT + M", hl.dsp.workspace.toggle_special("minimized"), { description = "Vis/skjul minimerede vinduer" })
     hl.bind(mod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprlock"), { description = "Lås skærmen" })
-    hl.bind(mod .. " + SHIFT + M", hl.dsp.exit(), { description = "Afslut Hyprland" })
 
     hl.bind(mod .. " + C", hl.dsp.exec_cmd('cliphist list | fuzzel --dmenu --prompt "Clipboard> " | cliphist decode | wl-copy'), { description = "Søg i clipboard-historik" })
     hl.bind("Print", hl.dsp.exec_cmd(scripts .. "screenshot area"), { description = "Gem og kopiér valgt skærmområde" })

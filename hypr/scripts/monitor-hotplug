@@ -14,6 +14,7 @@ while sleep 2; do
     external_count=$(awk '/^Monitor / { if ($2 != "eDP-1") count++ } END { print count + 0 }' <<<"$monitors")
 
     if [[ $external_count -eq 0 ]]; then
+        hyprctl eval 'hl.monitor({ output = "eDP-1", disabled = false })' >/dev/null 2>&1 || true
         hyprctl eval 'hl.dispatch(hl.dsp.dpms({ monitor = "eDP-1", action = "enable" }))' >/dev/null 2>&1 || true
     fi
 
