@@ -45,6 +45,7 @@ case "$mode" in
         link "$repo/gtk/gtk-3.0/settings.ini" "$HOME/.config/gtk-3.0/settings.ini"
         link "$repo/gtk/gtk-4.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
         link "$repo/xdg/mimeapps.list" "$HOME/.config/mimeapps.list"
+        link "$repo/kde/kglobalshortcutsrc" "$HOME/.config/kglobalshortcutsrc"
         link "$repo/pi/AGENTS.md" "$HOME/.pi/agent/AGENTS.md"
         link "$repo/pi/settings.json" "$HOME/.pi/agent/settings.json"
         link "$repo/pi/models.json" "$HOME/.pi/agent/models.json"

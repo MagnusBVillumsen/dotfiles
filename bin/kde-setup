@@ -4,8 +4,8 @@ set -euo pipefail
 # KDE-tilpasninger:
 #   1. Launcher (KRunner) på den bare Super-tast.
 #   2. Panel auto-hide ("full focus").
-# Alacritty-genvejen sættes via Systemindstillinger → Tastatur → Genveje
-# og versioneres bagefter (khotkeysrc-formatet er nemmest at generere i GUI'en).
+# Super+Space → KRunner og Super+Return → Alacritty er versioneret i
+# kde/kglobalshortcutsrc (linkes af --link).
 
 # 1. Launcher på Super (modifier-only shortcut håndteres af KWin)
 kwriteconfig6 --file kwinrc --group ModifierOnlyShortcuts --key Meta \

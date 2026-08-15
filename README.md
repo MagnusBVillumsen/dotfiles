@@ -121,7 +121,9 @@ for den fulde liste.
 - Plasma-tema, wallpapers, plasmoider og panels styres i KDE's egne
   indstillinger (Systemindstillinger) og er ikke repo-ejede.
 
-KDE-tilpasninger (launcher på `Super`, panel auto-hide) anvendes med:
+KDE-genveje versioneres i `kde/kglobalshortcutsrc` (linkes af `--link`):
+`Super+Space` → KRunner og `Super+Return` → Alacritty. Launcher på bare
+`Super` og panel auto-hide anvendes med:
 
 ```sh
 ~/dotfiles/bin/dotfiles-install --kde
