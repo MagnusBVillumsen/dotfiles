@@ -121,6 +121,12 @@ for den fulde liste.
 - Plasma-tema, wallpapers, plasmoider og panels styres i KDE's egne
   indstillinger (Systemindstillinger) og er ikke repo-ejede.
 
+KDE-tilpasninger (launcher på `Super`, panel auto-hide) anvendes med:
+
+```sh
+~/dotfiles/bin/dotfiles-install --kde
+```
+
 ## Skærm-hotplug
 
 På Flow Z13 (aftageligt tastatur) slukkes den interne skærm (`eDP`), når man

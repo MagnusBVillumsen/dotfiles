@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# KDE-tilpasninger:
+#   1. Launcher (KRunner) på den bare Super-tast.
+#   2. Panel auto-hide ("full focus").
+# Alacritty-genvejen sættes via Systemindstillinger → Tastatur → Genveje
+# og versioneres bagefter (khotkeysrc-formatet er nemmest at generere i GUI'en).
+
+# 1. Launcher på Super (modifier-only shortcut håndteres af KWin)
+kwriteconfig6 --file kwinrc --group ModifierOnlyShortcuts --key Meta \
+    "org.kde.krunner,/App,org.kde.krunner.App,display"
+
+# 2. Panel auto-hide. Nested gruppe ([PlasmaViews][Panel 2]) kan ikke skrives
+#    med kwriteconfig6, så vi skriver direkte.
+python3 - <<'PY'
+import pathlib
+p = pathlib.Path.home() / ".config/plasmashellrc"
+c = p.read_text() if p.exists() else ""
+if "panelVisibility" not in c:
+    c = c.replace("[PlasmaViews][Panel 2]\nfloating=1\n",
+                  "[PlasmaViews][Panel 2]\nfloating=1\npanelVisibility=1\n")
+    p.write_text(c)
+PY
+
+# Genindlæs
+qdbus6 org.kde.KWin /KWin reconfigure 2>/dev/null || true
+systemctl --user restart plasma-plasmashell.service 2>/dev/null || true
+
+printf 'KDE-tilpasninger anvendt: launcher på Super, panel auto-hide.\n'

@@ -85,8 +85,11 @@ case "$mode" in
     --autologin)
         "$repo/bin/setup-autologin" "$USER"
         ;;
+    --kde)
+        "$repo/bin/kde-setup"
+        ;;
     *)
-        printf 'Brug: %s [--check|--install|--link|--plugins|--activate|--setup|--z13|--autologin]\n' "$0" >&2
+        printf 'Brug: %s [--check|--install|--link|--plugins|--activate|--setup|--z13|--autologin|--kde]\n' "$0" >&2
         exit 2
         ;;
 esac
