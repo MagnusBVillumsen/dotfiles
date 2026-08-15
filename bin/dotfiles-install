@@ -55,6 +55,7 @@ case "$mode" in
         link "$repo/z13/systemd/z13gui.service" "$HOME/.config/systemd/user/z13gui.service"
         link "$repo/z13/z13gui.desktop" "$HOME/.local/share/applications/z13gui.desktop"
         link "$repo/bin/theme-set" "$HOME/.local/bin/theme-set"
+        link "$repo/bin/monitor-hotplug" "$HOME/.local/bin/monitor-hotplug"
         systemctl --user daemon-reload 2>/dev/null || true
         systemctl --user disable --now z13ctl.socket 2>/dev/null || true
         pkill -TERM -u "$USER" -f "$HOME/.local/bin/z13ctl daemon" 2>/dev/null || true

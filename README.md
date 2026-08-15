@@ -121,6 +121,23 @@ for den fulde liste.
 - Plasma-tema, wallpapers, plasmoider og panels styres i KDE's egne
   indstillinger (Systemindstillinger) og er ikke repo-ejede.
 
+## Skærm-hotplug
+
+På Flow Z13 (aftageligt tastatur) slukkes den interne skærm (`eDP`), når man
+arbejder på eksterne skærme. `bin/monitor-hotplug` genaktiverer automatisk
+`eDP`, når alle eksterne skærme frakobles, så enheden opfører sig som en bærbar.
+
+Scriptet udløses af en udev-regel på DRM-change. Installér reglen (kræver sudo):
+
+```sh
+sudo install -Dm644 ~/dotfiles/system/99-monitor-hotplug.rules /etc/udev/rules.d/99-monitor-hotplug.rules
+sudo udevadm control --reload-rules
+```
+
+Scriptet linkes automatisk til `~/.local/bin/monitor-hotplug` af
+`dotfiles-install --link`. Brugernavnet i reglen er `magnus` — justér hvis
+repoet genbruges under et andet navn.
+
 ## Temaer
 
 Et tema er en mappe under `themes/` med app-fragmenter til Alacritty og tmux. `bin/theme-set THEME` kopierer dem til det ignorerbare runtime-lag

@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Hotplug-sikkerhedsnet: genaktivér den interne skærm (eDP), når alle eksterne
+# skærme frakobles. Udløses af udev på DRM-change.
+# Se system/99-monitor-hotplug.rules.
+
+uid=$(id -u)
+export XDG_RUNTIME_DIR="/run/user/$uid"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$uid/bus"
+
+# Opsnap DISPLAY/XAUTHORITY dynamisk fra en kørende KDE-session-proces
+# (stier som /tmp/xauth_* ændrer sig pr. session).
+pid=""
+for proc in kwin_x11 plasmashell kded6; do
+    pid=$(pgrep -u "$uid" -n "$proc" 2>/dev/null || true)
+    [[ -n $pid ]] && break
+done
+if [[ -n $pid && -r /proc/$pid/environ ]]; then
+    while IFS= read -r -d '' kv; do
+        case "$kv" in
+            DISPLAY=*) export DISPLAY="${kv#DISPLAY=}" ;;
+            XAUTHORITY=*) export XAUTHORITY="${kv#XAUTHORITY=}" ;;
+        esac
+    done < "/proc/$pid/environ"
+fi
+export DISPLAY=${DISPLAY:-:0}
+export XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority}
+
+# Lad kscreen nå at opdatere tilstanden efter hotplug, før vi tjekker.
+sleep 2
+
+python3 - <<'PY' || true
+import json
+import subprocess
+
+r = subprocess.run(["kscreen-doctor", "-j"], capture_output=True, text=True)
+try:
+    data = json.loads(r.stdout)
+except Exception:
+    raise SystemExit(0)
+
+internal = None
+external_active = False
+for o in data.get("outputs", []):
+    name = o.get("name", "")
+    if name.startswith("eDP"):
+        internal = o
+    elif o.get("enabled") and o.get("connected"):
+        external_active = True
+
+if internal and not internal.get("enabled") and not external_active:
+    subprocess.run(
+        ["kscreen-doctor", f"output.{internal['name']}.enable"],
+        check=False,
+    )
+PY
+
+exit 0
