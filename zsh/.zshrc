@@ -24,6 +24,7 @@ alias la='ls -A --color=auto'
 alias grep='grep --color=auto'
 alias vim='nvim'
 alias v='nvim'
+alias llm='~/llm/llm.sh'
 
 # ssh-agent — start automatisk hvis ikke kørende
 if [ -z "$SSH_AUTH_SOCK" ]; then

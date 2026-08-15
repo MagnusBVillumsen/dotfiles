@@ -162,6 +162,12 @@ touchvenlig GUI (`z13gui`). Installér med:
 ~/dotfiles/bin/dotfiles-install --z13
 ```
 
+## Ansigtslogin (Howdy)
+
+Windows Hello-agtigt ansigtslogin med Z13'ens IR-kamera. Se
+[howdy/README.md](howdy/README.md) for opsætning (`howdy-git`, config,
+OpenCV-patch og PAM).
+
 ## tmux-plugins
 
 `dotfiles-install --setup` kloner TPM konfliktsikkert og installerer de
